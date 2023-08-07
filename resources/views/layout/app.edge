@@ -1,0 +1,43 @@
+{{--  header  --}}
+@include('../partials/header.edge')
+
+<body>
+
+  <!-- Navigation -->
+  @include('../partials/navbar.edge')
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+      {{--  fungsi @section adalah untuk mengoverite konten yg didalam nya dengan konten yang ditentukan ditempat lain, jikalau ingin menampilkan konten default dengan konten tambahan di @section bisa di tambahkan @super dibawah @section  --}}
+      @section('sidebar')
+      @include('../partials/sidebar.edge')
+      @endsection
+
+      {{--  <div class="col-lg-3">
+
+        <h1 class="my-4">BWA Adonis</h1>
+        <div class="list-group">
+          <a href="/daftarbuku" class="list-group-item">Daftar Buku</a>
+          <a href="/inputbuku" class="list-group-item">Input Buku</a>
+        </div>
+
+
+      </div>  --}}
+
+      @!section('content')
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  {{--  my script  --}}
+@include('../partials/script.edge')
+
+</body>
+
+</html>

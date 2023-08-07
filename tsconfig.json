@@ -29,7 +29,9 @@
       "@adonisjs/core",
       "@adonisjs/repl",
       "@japa/preset-adonis/build/adonis-typings",
-      "@adonisjs/shield"
+      "@adonisjs/shield",
+      "@adonisjs/view",
+      "@adonisjs/lucid"
     ]
   }
 }
