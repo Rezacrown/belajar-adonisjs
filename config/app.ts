@@ -50,6 +50,7 @@ export const http: ServerConfig = {
   */
   allowMethodSpoofing: false,
 
+
   /*
   |--------------------------------------------------------------------------
   | Subdomain offset

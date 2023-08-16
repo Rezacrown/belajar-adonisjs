@@ -5,37 +5,39 @@
   <div class="row">
     <div class="col-lg-12">
         <center class="py-2">
-          <h3>Input data buku</h3>
+          <h3>Edit {{data.title}}</h3>
         </center>
 
         {{--  form  --}}
-        <form action="/store" method="POST" id="form">
+        <form action="/update/{{data.id}}" method="POST" id="form">
             <div class="form-group row">
               <label for="judul" class="col-sm-2 col-form-label">Judul</label>
               <div class="col-sm-10">
-                <input type="input" class="form-control" id="judul" name="judul" value={{session.has('data-body.data.judul') ? session.get('data-body.data.judul') : ''}} >
-                <span class="text-danger">
-                  {{--  @if(flashMessages.has('error.title'))  --}}
+                <input type="input" class="form-control" id="judul" name="judul"
+                value='{{data.title}}' >
+                @if(flashMessages.has('error.title'))
+                <div class="alert alert-danger" role="alert">
                   {{flashMessages.get('error.title', '')}}
-                  {{--  @endif  --}}
-                </span>
+                </div>
+                @endif
               </div>
             </div>
             <div class="form-group row">
               <label for="tahun-terbit" class="col-sm-2 col-form-label">Tahun Terbit</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" id="tahun-terbit" name="tahun_terbit" value={{session.has('data-body.data.tahun_terbit') ? session.get('data-body.data.tahun_terbit') : ''}} >
-                <span class="text-danger">
-                  {{--  @if(flashMessages.has('error.tahun_terbit'))  --}}
-                  {{flashMessages.has('error.tahun_terbit') ? 'tahun terbit harus diisi' : ''}}
-                  {{--  @endif  --}}
-                </span>
+                <input type="number" class="form-control" id="tahun-terbit" name="tahun_terbit" value='{{data.tahun_terbit}}' >
+                @if(flashMessages.has('error.tahun_terbit'))
+                <div class="alert alert-danger" role="alert">
+                  {{flashMessages.get('error.tahun_terbit', '')}}
+                </div>
+                @endif
+
               </div>
             </div>
             <div class="form-group row">
               <label for="deskripsi" class="col-sm-2 col-form-label">Deskripsi</label>
               <div class="col-sm-10">
-                <input type="input" class="form-control" id="deskripsi" name="deskripsi">
+                <input type="input" class="form-control" id="deskripsi" name="deskripsi" value="{{data.deskripsi ?? ''}}">
               </div>
             </div>
             <div class="form-group row">

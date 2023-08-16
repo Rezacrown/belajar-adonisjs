@@ -2,7 +2,7 @@ import Database from "@ioc:Adonis/Lucid/Database";
 import BaseSeeder from "@ioc:Adonis/Lucid/Seeder";
 
 // khusus klo mau generate data dummy pakai factory
-import { factory } from "Database/factories";
+// import { factory } from "Database/factories";
 
 // yang tanpa factory
 export default class extends BaseSeeder {

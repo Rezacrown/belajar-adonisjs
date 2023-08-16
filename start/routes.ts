@@ -62,10 +62,23 @@ import Route from "@ioc:Adonis/Core/Route";
 
 
 
+
 //
 //
 //  parameter kedua path nya relatif dengan folder Htpp pada controller di app
 Route.get('/', 'buku/HomeController.index')
 Route.get('/daftarbuku', 'buku/HomeController.daftarBukuRender')
 Route.get('/inputbuku', 'buku/HomeController.inputBukuRender')
+
+Route.get('/edit/:id', 'buku/HomeController.editBukuRender')
+
+// action route
+Route.post('/store', 'buku/HomeController.store')
+Route.post('/update/:id', 'buku/HomeController.editBuku')
+Route.post('/delete/:id', 'buku/HomeController.hapusBuku')
+
+
+
+
+
 
