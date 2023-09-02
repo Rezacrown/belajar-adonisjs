@@ -1,6 +1,14 @@
 @layout('../layout/app.edge')
 
+
+
 @section('content')
+@if(auth.isAuthenticated)
+
+
+{{--  {{ auth.user.name }}  --}}
+
+
 <div class="col-lg-9">
   <div class="row">
     <div class="col-lg-12">
@@ -61,4 +69,7 @@
   </script>
 
 </div>
+@endif
+
 @endsection
+

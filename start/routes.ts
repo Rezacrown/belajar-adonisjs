@@ -19,6 +19,7 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route";
+import AuthController from "App/Controllers/Http/AuthController";
 
 // Route.get("/", async () => {
 //   return { hello: "world" };
@@ -61,6 +62,13 @@ import Route from "@ioc:Adonis/Core/Route";
 // Route.put("/controller", "BelajaradonisController.update");
 
 
+// register route
+Route.get('/register', AuthController.indexRegister)
+Route.post('/register', AuthController.Register).as('register')
+
+// login route
+Route.get('/login', AuthController.loginIndex)
+Route.post('/login', AuthController.login).as('login')
 
 
 //
@@ -68,7 +76,7 @@ import Route from "@ioc:Adonis/Core/Route";
 //  parameter kedua path nya relatif dengan folder Htpp pada controller di app
 Route.get('/', 'buku/HomeController.index')
 Route.get('/daftarbuku', 'buku/HomeController.daftarBukuRender')
-Route.get('/inputbuku', 'buku/HomeController.inputBukuRender')
+Route.get('/inputbuku', 'buku/HomeController.inputBukuRender').middleware('auth:web')
 
 Route.get('/edit/:id', 'buku/HomeController.editBukuRender')
 

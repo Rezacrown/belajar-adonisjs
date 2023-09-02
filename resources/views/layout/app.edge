@@ -1,6 +1,10 @@
 {{--  header  --}}
 @include('../partials/header.edge')
 
+{{--  style optional  --}}
+@!section('style-after')
+
+
 <body>
 
   <!-- Navigation -->
@@ -37,6 +41,9 @@
 
   {{--  my script  --}}
 @include('../partials/script.edge')
+
+
+@!section('script-after')
 
 </body>
 

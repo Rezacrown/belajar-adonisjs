@@ -11,6 +11,7 @@ export default class HomeController {
     return view.render("welcome");
   }
 
+
   async daftarBukuRender({ view }: HttpContextContract) {
     // const book = new Book();
     // jangan pakia new Book jika ingin pakai mehtod di orm nya terutama find
@@ -22,7 +23,15 @@ export default class HomeController {
     return view.render("buku/daftar_buku", { data: book });
   }
 
-  inputBukuRender({ view }: HttpContextContract) {
+  async inputBukuRender({ view, auth }: HttpContextContract) {
+
+
+
+    // await auth.use('web').authenticate()
+
+    // console.log({userAuth: user})
+
+
     // view itu relatif dengan folder viewnya
     return view.render("buku/input_buku");
   }
@@ -159,5 +168,6 @@ export default class HomeController {
       })
 
   }
+
 
 }

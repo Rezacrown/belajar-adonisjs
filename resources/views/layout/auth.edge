@@ -1,0 +1,29 @@
+{{--  header  --}}
+@include('../partials/header.edge')
+
+{{--  style optional  --}}
+@!section('style-after')
+
+
+<body>
+
+  <!-- Navigation -->
+  @include('../partials/navbar.edge')
+
+  <!-- Page Content -->
+  <div class="container">
+
+    @!section('content')
+
+  </div>
+  <!-- /.container -->
+
+  {{--  my script  --}}
+@include('../partials/script.edge')
+
+
+@!section('script-after')
+
+</body>
+
+</html>
