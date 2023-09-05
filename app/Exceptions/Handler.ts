@@ -13,11 +13,27 @@
 |
 */
 
-import Logger from '@ioc:Adonis/Core/Logger'
-import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
-
+import Logger from "@ioc:Adonis/Core/Logger";
+import HttpExceptionHandler from "@ioc:Adonis/Core/HttpExceptionHandler";
+// import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 export default class ExceptionHandler extends HttpExceptionHandler {
-  constructor () {
-    super(Logger)
+  // protected disableStatusPagesInDevelopment: false;
+
+
+  // protected statusPages = {
+  //   '400': "errors/not-found",
+  // };
+
+  // handle(error: any, ctx: HttpContextContract): any {
+  //   if (error.code == 'ER_DUP_ENTRY') {
+  //    ctx.response.badRequest({data: 'tidak ada'})
+  //  }
+  // }
+
+
+
+
+  constructor() {
+    super(Logger);
   }
 }

@@ -22,24 +22,35 @@
               <label for="judul" class="col-sm-2 col-form-label">Judul</label>
               <div class="col-sm-10">
                 <input type="input" class="form-control" id="judul" name="judul" value={{session.has('data-body.data.judul') ? session.get('data-body.data.judul') : ''}} >
-                <span class="text-danger">
-                  {{--  @if(flashMessages.has('error.title'))  --}}
-                  {{flashMessages.get('error.title', '')}}
-                  {{--  @endif  --}}
-                </span>
+                    @if(flashMessages.has('error.title'))
+                  <input readonly class="form-control bg-light text-danger" value="{{ flashMessages.get('error.title', 'title harus diisi') }}" role="alert"></input>
+                  @end
               </div>
             </div>
             <div class="form-group row">
               <label for="tahun-terbit" class="col-sm-2 col-form-label">Tahun Terbit</label>
               <div class="col-sm-10">
                 <input type="number" class="form-control" id="tahun-terbit" name="tahun_terbit" value={{session.has('data-body.data.tahun_terbit') ? session.get('data-body.data.tahun_terbit') : ''}} >
-                <span class="text-danger">
-                  {{--  @if(flashMessages.has('error.tahun_terbit'))  --}}
-                  {{flashMessages.has('error.tahun_terbit') ? 'tahun terbit harus diisi' : ''}}
-                  {{--  @endif  --}}
-                </span>
+                  @if(flashMessages.has('error.tahun_terbit'))
+                  <input readonly class="form-control bg-light text-danger" value="{{ flashMessages.get('error.tahun_terbit', 'tahun terbit harus diisi') }}" role="alert"></input>
+                  @end
               </div>
             </div>
+
+
+             <div class="form-group row">
+              <label for="Kategori" class="col-sm-2 col-form-label">Kategori</label>
+              <div class="col-sm-10">
+                <select class="form-select" name="kategori" aria-label="Default select example" required>
+                  @each(category in data)
+                      <option value={{category.id}}>{{ category.name }}</option>
+                      @endeach
+                </select>
+              </div>
+            </div>
+
+
+
             <div class="form-group row">
               <label for="deskripsi" class="col-sm-2 col-form-label">Deskripsi</label>
               <div class="col-sm-10">

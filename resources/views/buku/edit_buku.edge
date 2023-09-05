@@ -1,11 +1,14 @@
 @layout('../layout/app.edge')
 
 @section('content')
+
 <div class="col-lg-9">
   <div class="row">
     <div class="col-lg-12">
         <center class="py-2">
-          <h3>Edit {{data.title}}</h3>
+          <h3>Edit
+            {{data.title}}
+          </h3>
         </center>
 
         {{--  form  --}}
@@ -14,7 +17,7 @@
               <label for="judul" class="col-sm-2 col-form-label">Judul</label>
               <div class="col-sm-10">
                 <input type="input" class="form-control" id="judul" name="judul"
-                value='{{data.title}}' >
+                value="{{ data.title }}" >
                 @if(flashMessages.has('error.title'))
                 <div class="alert alert-danger" role="alert">
                   {{flashMessages.get('error.title', '')}}
@@ -34,6 +37,26 @@
 
               </div>
             </div>
+
+
+            <div class="form-group row">
+              <label for="Kategori" class="col-sm-2 col-form-label">Kategori</label>
+              <div class="col-sm-10">
+                <select class="form-select" name="kategori" aria-label="Default select example" required>
+                  @each(category in categories)
+
+                    @if(category.id !== data.category.id)
+                    <option value={{category.id}}>{{ category.name }}</option>
+                  @else
+                  <option selected value={{data.category.id}}>{{ data.category.name }}</option>
+                    @endif
+
+                      @endeach
+                </select>
+              </div>
+            </div>
+
+
             <div class="form-group row">
               <label for="deskripsi" class="col-sm-2 col-form-label">Deskripsi</label>
               <div class="col-sm-10">
@@ -63,4 +86,5 @@
   </script>
 
 </div>
+
 @endsection

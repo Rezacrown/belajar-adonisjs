@@ -3,46 +3,49 @@ import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 // schema untuk membuat validation nya sedangkan rule adalah aturan yang bisa dimasukan kedalam schemanya, contoh
 // schema.string([rules.email(), rules.required(), dan masih banyak lagi yang bisa diterapkan ])
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
-import Book from "App/Models/Book";
+import Book from "App/Models/BookModel";
+import CategoryModel from "App/Models/CategoryModel";
 
 export default class HomeController {
   // jika mau running front end assetnya baik js atau css ataupun image configure dulu webpack nyaz
-  index({ view }: HttpContextContract) {
+  async index({ view }: HttpContextContract) {
+
+
     return view.render("welcome");
   }
 
-
   async daftarBukuRender({ view }: HttpContextContract) {
     // const book = new Book();
-    // jangan pakia new Book jika ingin pakai mehtod di orm nya terutama find
-    const book = await Book.all();
+    // jangan pakai new Book jika ingin pakai mehtod di orm nya terutama find
+    // const book = await Book.all();
 
-    console.log(book);
+    const books = await Book.query().preload("category");
+
+    // return {
+    //   data: books[0].category
+    // }
 
     // view itu relatif dengan folder viewnya
-    return view.render("buku/daftar_buku", { data: book });
+    return view.render("buku/daftar_buku", {
+      data: books,
+    });
   }
 
-  async inputBukuRender({ view, auth }: HttpContextContract) {
-
-
-
-    // await auth.use('web').authenticate()
-
-    // console.log({userAuth: user})
-
+  async inputBukuRender({ view }: HttpContextContract) {
+    const category = await CategoryModel.query();
 
     // view itu relatif dengan folder viewnya
-    return view.render("buku/input_buku");
+    return view.render("buku/input_buku", { data: category });
   }
 
   // untuk simpan buku
   async store({ request, response, session }: HttpContextContract) {
-    const { judul, tahun_terbit, deskripsi } = request.body();
+    const { judul, tahun_terbit, deskripsi, kategori } = request.body();
     const skemaValidator = schema.create({
       judul: schema.string([rules.required()]),
       tahun_terbit: schema.number([rules.required()]),
       deskripsi: schema.string.nullable(),
+      kategori: schema.string(),
     });
 
     // taruh session untuk validasi input form
@@ -51,6 +54,7 @@ export default class HomeController {
         judul,
         tahun_terbit,
         deskripsi,
+        kategori,
       },
     });
 
@@ -70,6 +74,7 @@ export default class HomeController {
         book.title = res.judul;
         book.tahun_terbit = res.tahun_terbit.toString();
         book.deskripsi = res.deskripsi;
+        book.category_id = parseInt(res.kategori);
 
         book.save();
 
@@ -92,12 +97,17 @@ export default class HomeController {
       });
   }
 
-  async editBukuRender({ view, params }: HttpContextContract) {
+  async editBukuRender({ view, params, }: HttpContextContract) {
     const { id } = params;
 
-    const book = await Book.find(id);
 
-    return view.render("buku/edit_buku", { data: book });
+
+    // const book = await Book.find(id);
+    const book = await Book.query().where("id", id).preload("category");
+
+    const categories = await CategoryModel.all();
+
+    return view.render("buku/edit_buku", { data: book[0], categories });
   }
 
   async editBuku({ params, request, response, session }: HttpContextContract) {
@@ -105,6 +115,7 @@ export default class HomeController {
       judul: schema.string([rules.required()]),
       tahun_terbit: schema.number([rules.required()]),
       deskripsi: schema.string.nullable(),
+      kategori: schema.string(),
     });
 
     const { id } = params;
@@ -119,6 +130,7 @@ export default class HomeController {
             title: res.judul,
             tahun_terbit: res.tahun_terbit.toString(),
             deskripsi: res.deskripsi,
+            category_id: parseInt(res.kategori),
           })
           .save();
 
@@ -131,7 +143,7 @@ export default class HomeController {
 
         let _err = {};
 
-        err.messages.errors.forEach((error,) => {
+        err.messages.errors.forEach((error) => {
           switch (error.field) {
             case "judul":
               _err = { ..._err, title: "title tidak boleh kosong" };
@@ -155,19 +167,15 @@ export default class HomeController {
       });
   }
 
+  async hapusBuku({ response, params, session }: HttpContextContract) {
+    const { id } = params;
 
-  async hapusBuku({response, params, session}: HttpContextContract) {
-      const {id} = params
+    const book = await Book.findOrFail(id);
 
-      const book = await Book.findOrFail(id)
+    await book.delete().then(() => {
+      session.flash("sukses", `berhasil hapus data buku dengan id ${book.id}`);
 
-      await book.delete().then(()=> {
-        session.flash('sukses', `berhasil hapus data buku dengan id ${book.id}`)
-
-        return response.redirect('/daftarbuku')
-      })
-
+      return response.redirect("/daftarbuku");
+    });
   }
-
-
 }

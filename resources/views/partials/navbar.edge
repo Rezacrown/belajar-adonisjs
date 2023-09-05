@@ -1,16 +1,51 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="#">Spirit of Learning</a>
+    {{--  @if(auth.isGuest)  --}}
+      <a class="navbar-brand" href="#">Spirit of Learning</a>
+    {{--  @else
+      <a href="#" class="navbar-brand">hello.. {{ auth.user.email }}</a>
+    @endif  --}}
+
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
+
         <li class="nav-item active">
           <a class="nav-link" href="/">Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
+
+        @if(auth.isLoggedIn)
+        <form action="{{ route('logout') }}" id="logout-btn" method="post">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">
+              <span class="sr-only" onclick="handleLogout()">Logout
+              </span>
+            </a>
+          </li>
+        </form>
+
+
+        <script>
+          function handleLogout() {
+            const form = document.getElementById('logout-btn')
+            form.submit()
+          }
+        </script>
+
+        @else
+        <li class="nav-item active">
+          <a class="nav-link" href="/login">Login
+          </a>
+        </li>
+        @endif
+
+
+
       </ul>
     </div>
   </div>

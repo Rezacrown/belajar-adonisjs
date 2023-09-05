@@ -3,11 +3,26 @@ import AuthModel from "App/Models/AuthModel";
 
 export default class AuthController {
   // register
-  public static indexRegister({ view }: HttpContextContract) {
+  public static async indexRegister({
+    view,
+    auth,
+    response,
+  }: HttpContextContract) {
+    await auth.use("web").check();
+
+    // cek apakah session loggin masih ada
+    if (auth.isLoggedIn) {
+      return response.redirect("/");
+    }
+
     return view.render("auth/register");
   }
 
-  public static async Register({ request, response }: HttpContextContract) {
+  public static async Register({
+    request,
+    response,
+    session,
+  }: HttpContextContract) {
     const { email, password } = request.body();
 
     try {
@@ -18,27 +33,70 @@ export default class AuthController {
 
       return response.redirect("/");
     } catch (err) {
-      return response.badRequest(err);
+      session.flash(
+        "error",
+        err.code == "ER_DUP_ENTRY" ? "email duplikat" : err.code
+      );
+      return response.redirect("/");
     }
   }
 
   // login
-  public static loginIndex({ view }: HttpContextContract) {
+  public static async loginIndex({
+    view,
+    auth,
+    response,
+  }: HttpContextContract) {
+    // cek token/session
+    await auth.use("web").check();
+
+    if (auth.use("web").isLoggedIn) return response.redirect("/");
+
     return view.render("auth/login");
   }
 
-  public static async login({ auth, request, response }: HttpContextContract) {
+  public static async login({
+    auth,
+    request,
+    response,
+    session,
+  }: HttpContextContract) {
     const { email, password } = request.body();
 
-    console.log({ email, password });
+    // console.log({ email, password });
 
     try {
       await auth.use("web").attempt(email, password);
 
       response.redirect("/");
     } catch (err) {
-      // return response.redirect('/daftarbuku');
-      return response.json({ err });
+      switch (err.code) {
+        case "E_INVALID_AUTH_UID":
+          err.code = "email belum terdaftar";
+          break;
+
+        case "E_INVALID_AUTH_PASSWORD":
+          err.code = "invalid credential";
+
+        default:
+          err.code;
+          break;
+      }
+
+      session.flash("error", err.code);
+      return response.redirect().back();
     }
+  }
+
+  // logout
+  public static async logout({ auth, response }: HttpContextContract) {
+    const verify = await auth.use('web').check()
+
+    if (verify == true) {
+      await auth.use('web').logout()
+
+      return response.redirect('/')
+    }
+
   }
 }

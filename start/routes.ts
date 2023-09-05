@@ -61,32 +61,28 @@ import AuthController from "App/Controllers/Http/AuthController";
 // Route.post("/controller", "BelajaradonisController.create");
 // Route.put("/controller", "BelajaradonisController.update");
 
-
 // register route
-Route.get('/register', AuthController.indexRegister)
-Route.post('/register', AuthController.Register).as('register')
+Route.get("/register", AuthController.indexRegister).as('register.index');
+Route.post("/register", AuthController.Register).as("register");
 
 // login route
-Route.get('/login', AuthController.loginIndex)
-Route.post('/login', AuthController.login).as('login')
+Route.get("/login", AuthController.loginIndex).as("login.index");
+Route.post("/login", AuthController.login).as("login");
+Route.post("/logout", AuthController.logout).as("logout");
 
 
 //
 //
 //  parameter kedua path nya relatif dengan folder Htpp pada controller di app
-Route.get('/', 'buku/HomeController.index')
-Route.get('/daftarbuku', 'buku/HomeController.daftarBukuRender')
-Route.get('/inputbuku', 'buku/HomeController.inputBukuRender').middleware('auth:web')
+Route.get("/", "buku/HomeController.index").middleware("check");
+Route.get("/daftarbuku", "buku/HomeController.daftarBukuRender")
+  .middleware("check");
+Route.get("/inputbuku", "buku/HomeController.inputBukuRender")
+  .middleware(["auth:web", 'check'])
 
-Route.get('/edit/:id', 'buku/HomeController.editBukuRender')
+Route.get("/edit/:id", "buku/HomeController.editBukuRender").middleware('auth:web');
 
 // action route
-Route.post('/store', 'buku/HomeController.store')
-Route.post('/update/:id', 'buku/HomeController.editBuku')
-Route.post('/delete/:id', 'buku/HomeController.hapusBuku')
-
-
-
-
-
-
+Route.post("/store", "buku/HomeController.store");
+Route.post("/update/:id", "buku/HomeController.editBuku");
+Route.post("/delete/:id", "buku/HomeController.hapusBuku");
